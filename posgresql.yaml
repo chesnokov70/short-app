@@ -30,6 +30,14 @@ spec:
           limits:
             memory: "750Mi"
             cpu: "750m"
+        volumeMounts:
+        - name: postgres-data
+          mountPath: /var/lib/postgresgl/data
+          subPath: postgres
+      volumes:
+      - name: postgres-data
+        persistentVolumeClaim:
+          claimName: postgres-pvc
 ---
 
 apiVersion: v1
