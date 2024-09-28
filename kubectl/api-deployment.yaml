@@ -14,8 +14,7 @@ spec:
     spec:
       containers:
       - name: short-api
-        image: antonlarichev/short-app:v1.0
-        #imagePullPolicy: Always
+        image: antonlarichev/short-api:v1.0
         ports:
         - containerPort: 3000
         resources:
@@ -28,6 +27,3 @@ spec:
             secretKeyRef:
               name: short-api-secret
               key: DATABASE_URL
-
-# DATABASE_URL
-# postgresql://user:password@url:5432/db

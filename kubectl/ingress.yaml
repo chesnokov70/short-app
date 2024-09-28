@@ -3,9 +3,7 @@ kind: Ingress
 metadata:
   name: myingress
   annotations:
-    nginx.ingreess.kubernetes.io/add-base-url: "true"
-  labels:
-    name: myingress
+    nginx.ingress.kubernetes.io/add-base-url: "true"
 spec:
   ingressClassName: nginx
   rules:
@@ -26,4 +24,4 @@ spec:
             name: short-api-clusterip
             port:
               number: 3000
-
+# /api
