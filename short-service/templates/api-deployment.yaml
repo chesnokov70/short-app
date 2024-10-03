@@ -1,36 +1,33 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: short-api-deployment
+  name: {{ .Values.api.name }}-deployment
 spec:
-  replicas: 1
+  replicas: {{ .Values.api.replicas }}
   selector:
     matchLabels:
-      components: backend
+      components: {{ .Values.api.components }}
   template:
     metadata:
       labels:
-        components: backend
+        components: {{ .Values.api.components }}
     spec:
       containers:
-      - name: short-api
-        image: antonlarichev/short-api:latest
+      - name: {{ .Values.api.name }}
+        image: "{{ .Values.api.image }}:{{ .Values.api.version }}"
         ports:
-        - containerPort: 3000
+        - containerPort: {{ .Values.api.port }}
         resources:
-          limits:
-            memory: "500Mi"
-            cpu: "200m"
+          limits: {{ .Values.api.limits | toYaml | nindent 12 }}
         env:
-        - name: DATABASE_URL
-          valueFrom:
-            secretKeyRef:
-              name: short-api-secret
-              key: DATABASE_URL
+          {{- range .Values.api.envs }} 
+          {{- $data := dict "name" $.Values.api.name "env" . }}
+          {{- include "env.template" $data | indent 10 }}
+          {{- end }}
         volumeMounts:
-        - name: test
+        - name: test 
           mountPath: /etc/test
-          readOnly: true
+          readOnly: true     
         livenessProbe:
           exec:
             command:
